@@ -273,7 +273,6 @@ export const VoiceInput: React.FC<{
   onTranscript: (text: string) => void;
 }> = ({ onTranscript }) => {
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState('');
 
   const startListening = () => {
     // In production, use Web Speech API
@@ -288,7 +287,6 @@ export const VoiceInput: React.FC<{
 
       recognition.onresult = (event: any) => {
         const text = event.results[0][0].transcript;
-        setTranscript(text);
         onTranscript(text);
       };
 

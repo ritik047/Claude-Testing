@@ -12,8 +12,6 @@ import { ReviewSubmit } from './ReviewSubmit';
 import {
   OnboardingStep,
   MerchantData,
-  AgentContext,
-  ConversationMessage,
 } from '../types/onboarding';
 import { useOnboardingAgent } from '../hooks/useOnboardingAgent';
 
@@ -22,36 +20,16 @@ export const OnboardingFlow: React.FC = () => {
     OnboardingStep.WELCOME
   );
   const [merchantData, setMerchantData] = useState<Partial<MerchantData>>({});
-  const [showChat, setShowChat] = useState(true);
   const [chatMinimized, setChatMinimized] = useState(false);
 
   const {
     sendMessage,
     uploadDocument,
-    updateField,
     conversationHistory,
     suggestedActions,
     isProcessing,
-    agentResponse,
   } = useOnboardingAgent();
 
-  // Track user behavior for proactive assistance
-  const [stepStartTime, setStepStartTime] = useState(Date.now());
-  const [totalTimeSpent, setTotalTimeSpent] = useState(0);
-
-  useEffect(() => {
-    // Reset step timer when step changes
-    setStepStartTime(Date.now());
-  }, [currentStep]);
-
-  useEffect(() => {
-    // Track total time spent
-    const interval = setInterval(() => {
-      setTotalTimeSpent(prev => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const handleStepChange = (step: OnboardingStep) => {
     setCurrentStep(step);
@@ -63,7 +41,7 @@ export const OnboardingFlow: React.FC = () => {
   };
 
   const handleDocumentUpload = async (file: File, documentType: string) => {
-    const result = await uploadDocument(file, documentType);
+    const result = await uploadDocument(file, documentType as any);
 
     if (result.extractedData) {
       // Auto-fill form with extracted data
@@ -298,7 +276,7 @@ const BusinessInfoStep: React.FC<{
 const VerificationStep: React.FC<{
   merchantData: Partial<MerchantData>;
   onNext: () => void;
-}> = ({ merchantData, onNext }) => {
+}> = ({ onNext }) => {
   const [checks, setChecks] = useState({
     businessDetails: 'pending',
     documents: 'pending',
