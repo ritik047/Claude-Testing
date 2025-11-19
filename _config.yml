@@ -1,0 +1,30 @@
+# Jekyll Configuration for GitHub Pages
+
+# Exclude directories and files from processing
+exclude:
+  - node_modules/
+  - vendor/
+  - backend/
+  - frontend/node_modules/
+  - frontend/dist/
+  - frontend/build/
+  - .git/
+  - .gitignore
+  - package*.json
+  - "*.lock"
+  - Gemfile
+  - Gemfile.lock
+  - "*.py"
+  - "*.pyc"
+  - __pycache__/
+  - venv/
+  - .env
+
+# Keep the docs directory for documentation
+include:
+  - docs/
+
+# GitHub Pages settings
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
