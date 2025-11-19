@@ -4,9 +4,11 @@
  */
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LandingPage } from './components/LandingPage';
 import { OnboardingFlow } from './components/OnboardingFlow';
 import './styles/index.css';
+import './styles/landing.css';
 import './styles/onboarding.css';
 
 const App: React.FC = () => {
@@ -14,11 +16,11 @@ const App: React.FC = () => {
     <Router>
       <div className="app">
         <Routes>
+          {/* Landing page route */}
+          <Route path="/" element={<LandingPage />} />
+
           {/* Main onboarding route */}
           <Route path="/onboarding" element={<OnboardingFlow />} />
-
-          {/* Redirect root to onboarding */}
-          <Route path="/" element={<Navigate to="/onboarding" replace />} />
 
           {/* 404 fallback */}
           <Route path="*" element={<NotFound />} />

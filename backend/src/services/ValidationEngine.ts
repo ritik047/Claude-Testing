@@ -534,6 +534,55 @@ export class ValidationEngine {
     );
     return new Set(normalized).size === 1;
   }
+
+  /**
+   * Validate complete merchant data
+   */
+  async validateMerchantData(data: Record<string, any>): Promise<{
+    isValid: boolean;
+    issues: Array<{field: string; severity: string; message: string; suggestion?: string}>;
+    suggestions: string[];
+    warnings: string[];
+  }> {
+    const issues: Array<{field: string; severity: string; message: string; suggestion?: string}> = [];
+    const suggestions: string[] = [];
+    const warnings: string[] = [];
+
+    // Validate required fields
+    const requiredFields = [
+      'businessName',
+      'ownerName',
+      'email',
+      'phone',
+      'pan',
+      'address',
+      'city',
+      'state',
+      'pincode',
+      'accountNumber',
+      'ifscCode',
+      'accountHolderName',
+      'category',
+    ];
+
+    for (const field of requiredFields) {
+      if (!data[field]) {
+        issues.push({
+          field,
+          severity: 'error',
+          message: `${field} is required`,
+          suggestion: `Please provide ${field}`,
+        });
+      }
+    }
+
+    return {
+      isValid: issues.filter(i => i.severity === 'error').length === 0,
+      issues,
+      suggestions,
+      warnings,
+    };
+  }
 }
 
 export default ValidationEngine;
