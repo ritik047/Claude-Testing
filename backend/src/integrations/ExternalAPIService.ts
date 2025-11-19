@@ -457,6 +457,48 @@ export class ExternalAPIService {
   }
 
   /**
+   * Verify PAN number
+   */
+  async verifyPAN(pan: string): Promise<{
+    verified: boolean;
+    name?: string;
+    status?: string;
+  }> {
+    try {
+      const details = await this.fetchPANDetails(pan);
+      return {
+        verified: details.status === 'Valid',
+        name: details.name,
+        status: details.status,
+      };
+    } catch (error) {
+      console.error('PAN verification error:', error);
+      return { verified: false };
+    }
+  }
+
+  /**
+   * Verify GSTIN number
+   */
+  async verifyGSTIN(gstin: string): Promise<{
+    verified: boolean;
+    businessName?: string;
+    status?: string;
+  }> {
+    try {
+      const details = await this.fetchGSTDetails(gstin);
+      return {
+        verified: details.status === 'Active',
+        businessName: details.businessName,
+        status: details.status,
+      };
+    } catch (error) {
+      console.error('GSTIN verification error:', error);
+      return { verified: false };
+    }
+  }
+
+  /**
    * Batch enrich merchant data
    */
   async enrichMerchantData(data: {
